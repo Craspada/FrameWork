@@ -1,0 +1,157 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <meta name="author" content="ExtinPro y Asociados">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+</head>
+<body>
+    <header>
+        <a href="/">
+            <img id="logo" src="/img/logo_ExtinPro.png" alt="ExtinPro, ir al inicio">
+        </a>
+        <button id="boton_menu">Menú</button>
+        <nav class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/nosotros">Sobre Nosotros</a>
+            <a href="/productos">Nuestros Productos</a>
+            <a href="/contacto">Contáctanos</a>
+            <a href="/politica-privacidad">Política de Privacidad</a>
+        </nav>
+    </header>
+
+    <main>
+        <slot /> {/* Aquí se inyectará el contenido de cada página individual */}
+    </main>
+
+    <footer>
+        <p class="parrafo">&copy; 2026 ExtinPro.</p>
+    </footer>
+
+    <!-- Tu JavaScript migrado (Astro lo optimiza automáticamente) -->
+    <script>
+        const botonMenu = document.getElementById('boton_menu');
+        const nav = document.querySelector('.nav-links');
+        
+        botonMenu?.addEventListener('click', () => {
+            nav?.classList.toggle('nav-activo');
+        });
+    </script>
+</body>
+</html>
+
+<!-- Tu CSS migrado (is:global aplica los estilos a todo el sitio) -->
+<style is:global>
+:root{
+    --rojo: #DA041B;
+    --rojo-osc: #A00E16;
+    --carbon: #262626;
+    --gris: #4A4A4A;
+    --fondo: #F5F5F3;
+    --blanco: #FFFFFF;
+    --borde: #D9D9D6;
+    --acento: #F5B700;
+}
+
+body{
+    background-color: var(--blanco);
+    margin: 0;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 2em;
+}
+
+#boton_menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--rojo-osc);
+}
+
+.nav-links {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--carbon);
+    padding: 0.5em 1em;
+    transition: color 0.3s, background-color 0.3s;
+    border-radius: 4px;
+}
+
+.nav-links a:hover {
+    color: var(--rojo);
+    background-color: var(--fondo);
+}
+
+#logo {
+    width: 150px;
+    height: auto;
+}
+
+@media (max-width: 1024px) {
+    header {
+        padding: 0.5em 1em;
+    }
+    .nav-links {
+        gap: 0.2em;
+    }
+    .nav-links a {
+        padding: 0.4em 0.7em;
+        font-size: 0.9em;
+    }
+    footer {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-wrap: wrap;
+        padding: 0.5em 1em;
+    }
+    #boton_menu {
+        display: block;
+        order: 3;
+    }
+    .nav-links.nav-activo {
+        display: flex;
+    }
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+        padding: 0.5em 0;
+        display: none;
+        order: 4;
+    }
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.8em 1em;
+        border-bottom: 1px solid var(--borde);
+    }
+    footer {
+        padding: 40px;
+    }
+}
+</style>
