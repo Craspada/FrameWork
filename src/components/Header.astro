@@ -1,0 +1,71 @@
+---
+import { navegacion } from "../data/navegacion";  
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+---
+
+<header>
+    <div class="header-inner">
+        <a class="brand" href="/" aria-label="ExtinPro, ir al inicio">
+            <img id="logo" src="/img/logo_ExtinPro.png" alt="ExtinPro">
+        </a>
+
+        <button
+            id="boton_menu"
+            type="button"
+            aria-expanded="false"
+            aria-controls="navegacion-principal"
+            aria-label="Abrir menú"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav id="navegacion-principal" class="nav-links" aria-label="Navegación principal">
+            {navegacion.map(({ href, label }) => (
+                <a
+                    href={href}
+                    aria-current={currentPath === href ? 'page' : undefined}
+                >
+                    {label}
+                </a>
+            ))}
+            <a
+                class="nav-privacy"
+                href="/politica-privacidad"
+                aria-current={currentPath === '/politica-privacidad' ? 'page' : undefined}
+            >
+                Privacidad
+            </a>
+            <a class="nav-cta" href="/contacto">Hablemos</a>
+        </nav>
+    </div>
+</header>
+
+<script>
+    const menuButton = document.querySelector<HTMLButtonElement>('#boton_menu');
+    const navigationMenu = document.querySelector<HTMLElement>('#navegacion-principal');
+
+    if (menuButton && navigationMenu) {
+        const closeMenu = () => {
+            menuButton.setAttribute('aria-expanded', 'false');
+            menuButton.setAttribute('aria-label', 'Abrir menú');
+            navigationMenu.classList.remove('nav-activo');
+        };
+
+        menuButton.addEventListener('click', () => {
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+            menuButton.setAttribute('aria-expanded', String(!isExpanded));
+            menuButton.setAttribute('aria-label', isExpanded ? 'Abrir menú' : 'Cerrar menú');
+            navigationMenu.classList.toggle('nav-activo', !isExpanded);
+        });
+
+        navigationMenu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeMenu();
+        });
+    }
+</script>
