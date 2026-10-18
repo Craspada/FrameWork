@@ -5,12 +5,7 @@ interface Props {
 
 const { title } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const navigation = [
-    { href: '/', label: 'Inicio' },
-    { href: '/nosotros', label: 'Sobre nosotros' },
-    { href: '/productos', label: 'Productos' },
-    { href: '/contacto', label: 'Contacto' },
-];
+import { navegation } from '../data/navegation.ts';
 ---
 
 <!DOCTYPE html>
@@ -43,7 +38,7 @@ const navigation = [
             </button>
 
             <nav id="navegacion-principal" class="nav-links" aria-label="Navegación principal">
-                {navigation.map(({ href, label }) => (
+                {navegation.map(({ href, label }) => (
                     <a
                         href={href}
                         aria-current={currentPath === href ? 'page' : undefined}
@@ -79,7 +74,7 @@ const navigation = [
 
             <nav class="footer-links" aria-label="Enlaces del sitio">
                 <h2>Explora</h2>
-                {navigation.map(({ href, label }) => <a href={href}>{label}</a>)}
+                {navegation.map(({ href, label }) => <a href={href}>{label}</a>)}
                 <a href="/politica-privacidad">Política de privacidad</a>
             </nav>
 
@@ -171,7 +166,7 @@ button:focus-visible {
     outline-offset: 3px;
 }
 footer a:focus-visible {
-    outline: 3px solid var(--blanco);
+    outline: 3px solid var(--rojo-osc);
 }
 
 .skip-link {
