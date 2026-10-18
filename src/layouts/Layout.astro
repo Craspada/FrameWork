@@ -291,7 +291,11 @@ main {
     width: 100%;
     flex: 1;
 }
-
+.contenedor {
+    width: min(100% - 3rem, 1200px);
+    margin-inline: auto;
+    padding-block: 3rem;
+}
 footer {
     padding: 3.5rem max(1.5rem, calc((100% - 1200px) / 2)) 1.25rem;
     background: var(--carbon);
