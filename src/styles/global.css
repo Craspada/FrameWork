@@ -271,6 +271,57 @@ footer {
     transition: color 0.2s ease;
 }
 
+.formulario {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 24rem;
+    margin-top: 1.5rem;
+}
+
+.formulario label {
+    font-weight: 700;
+}
+
+.formulario input {
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--gris);
+    border-radius: 6px;
+    font: inherit;
+}
+
+.boton {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 0;
+    border-radius: 6px;
+    background: var(--rojo-osc);
+    color: var(--blanco);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background: var(--rojo);
+}
+
+.mensaje-error {
+    min-height: 1.5rem;
+    margin: 0;
+    color: var(--rojo-osc);
+    font-weight: 700;
+}
+
+.panel-cuenta {
+    max-width: 24rem;
+    margin-top: 1.5rem;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
 @media (max-width: 960px) {
     .header-inner {
         width: min(100% - 2rem, 1200px);
