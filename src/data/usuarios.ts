@@ -4,13 +4,13 @@ export const usuarios = [
         Nombre_apellido: 'Cliente 1',
         contrasena: 'Cliente1',
         descuento: 10,
-        atencion_prioritoria: false,
+        atencion_prioritaria: false,
     },
     {
         id_cliente: 2,
         Nombre_apellido: 'Cliente 2',
         contrasena: 'Cliente2',
         descuento: 20,
-        atencion_prioritoria: true,        
+        atencion_prioritaria: true,        
     },
 ];

@@ -37,13 +37,15 @@ import Layout from "../layouts/Layout.astro";
     const botonSalir = document.querySelector<HTMLElement>('#boton-salir');
 
     function mostrar() {
-        if( !form || !panel || !saludo || !detalle ) return;
-        const guardada = sessionStorage.getItem('sesión');
+        if (!form || !panel || !saludo || !detalle) return;
+        const guardada = sessionStorage.getItem('sesion');
 
         if (guardada) {
-            const sesion = JSON.parse(guardada)
-            saludo.textContent = 'Hola, ${sesion.nombre}';
-            detalle.textContent = 'Tu descuento es del ${sesion.descuento}%' + (sesion.prioritoria ? 'Tienes atención prioritoria.' : );
+            const sesion = JSON.parse(guardada);
+            saludo.textContent = `Hola, ${sesion.nombre}`;
+            detalle.textContent =
+                `Tu descuento es del ${sesion.descuento}%` +
+                (sesion.prioritaria ? '. Tienes atención prioritaria.' : '');
             form.hidden = true;
             panel.hidden = false;
         } else {
@@ -51,7 +53,6 @@ import Layout from "../layouts/Layout.astro";
             panel.hidden = true;
         }
     }
-
     form?.addEventListener('submit', (evento) => {
         evento.preventDefault();
         const datos = new FormData(form);
