@@ -167,6 +167,15 @@ main {
     margin-inline: auto;
     padding-block: 3rem;
 }
+.hero {
+    min-height: 70vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: var(--blanco);
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url("/img/Extinpro_intro.webp") center/cover no-repeat;
+}
 footer {
     padding: 3.5rem max(1.5rem, calc((100% - 1200px) / 2)) 1.25rem;
     background: var(--carbon);
