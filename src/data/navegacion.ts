@@ -3,5 +3,5 @@ export const navegacion = [
     { href: '/nosotros', label: 'Sobre nosotros' },
     { href: '/productos', label: 'Productos' },
     { href: '/contacto', label: 'Contacto' },
-    { href: '/login', label: 'Ingresar'}
+    { href: '/login', label: 'Mi cuenta'}
 ];
