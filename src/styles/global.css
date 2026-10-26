@@ -76,6 +76,11 @@ header {
     margin: 0 auto;
 }
 
+#logo {
+    height: 56px;
+    width: auto;
+}
+
 .brand,
 .footer-logo {
     display: inline-flex;
