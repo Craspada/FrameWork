@@ -1,10 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { productos } from '../data/productos.js';
 ---
 
 <Layout title="ExtinPro | Nuestros Productos">
-    <section id="Productos" class="contenedor">
-        <h1>Nuestros Productos</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id ex eget velit congue imperdiet...</p>
-    </section>
+    <div class="grilla-productos">
+        {productos.map(p =>(
+            <article class="tarjeta">
+                <h2>{p.nombre}</h2>
+                <p>{p.tipo} · {p.tamano}</p>
+                <p>{p.precio.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</p>
+            </article>
+        ))}
+    </div>
 </Layout>

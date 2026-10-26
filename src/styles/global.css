@@ -167,6 +167,13 @@ main {
     width: 100%;
     flex: 1;
 }
+
+.grilla-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
 .contenedor {
     width: min(100% - 3rem, 1200px);
     margin-inline: auto;
