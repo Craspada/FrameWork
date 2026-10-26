@@ -6,9 +6,6 @@
     --fondo: #F5F5F3;
     --blanco: #FFFFFF;
     --borde: #D9D9D6;
-    font-family: Arial, Helvetica, sans-serif;
-    color: var(--carbon);
-    background: var(--blanco);
 }
 
 * {
@@ -74,11 +71,6 @@ header {
     justify-content: space-between;
     gap: 2rem;
     margin: 0 auto;
-}
-
-#logo {
-    height: 56px;
-    width: auto;
 }
 
 .brand,
@@ -159,8 +151,8 @@ header {
 
 #logo {
     display: block;
-    width: 160px;
-    height: auto;
+    height: 80px;
+    width: auto;
 }
 
 main {
@@ -179,6 +171,21 @@ main {
     margin-inline: auto;
     padding-block: 3rem;
 }
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 6px;
+    background: var(--fondo);
+}
+
+.tarjeta h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
 .hero {
     min-height: 70vh;
     display: grid;
@@ -222,7 +229,7 @@ footer {
 .footer-logo {
     padding: 0.35rem 0.65rem;
     border-radius: 4px;
-    background: var(--blanco);
+    background: var(--carbon);
 }
 
 .footer-logo img {
