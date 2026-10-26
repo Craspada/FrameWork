@@ -6,6 +6,9 @@
     --fondo: #F5F5F3;
     --blanco: #FFFFFF;
     --borde: #D9D9D6;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--carbon);
+    background: var(--blanco);
 }
 
 * {
@@ -151,7 +154,7 @@ header {
 
 #logo {
     display: block;
-    height: 80px;
+    height: 100px;
     width: auto;
 }
 
@@ -175,7 +178,6 @@ main {
 .tarjeta {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     padding: 1rem;
     border-radius: 6px;
     background: var(--fondo);
@@ -399,7 +401,11 @@ footer {
     }
 
     #logo {
-        width: 145px;
+        width: 56px;
+    }
+
+    .footer img {
+        width: 100px;
     }
 
     #boton_menu {
