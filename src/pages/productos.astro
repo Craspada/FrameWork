@@ -6,14 +6,67 @@ import { productos } from '../data/productos.ts';
 <Layout title="ExtinPro | Nuestros Productos">
     <section id="Productos" class="contenedor">
         <h1>Nuestros Productos</h1>
+        <div class="filtros">
+            <label for="buscar">Buscar:</label>
+            <input type="text" id="buscar" placeholder="Buscar productos...">
+
+            <label for="filtro-tipo">Tipo:</label>
+            <select id="filtro-tipo">
+                <option value="">Todos</option>
+                <option value="PQS ABC">Polvo Químico Seco (PQS ABC)</option>
+                <option value="CO2">Dióxido de Carbono (CO2)</option>
+                <option value="H2O">Agua (H2O)</option>
+                <option value="Clase K">Acetato de Potasio (Clase K)</option>
+            </select>
+
+            <p id="resultado" role="status"></p>
+        </div>
         <div class="grilla-productos">
             {productos.map(p =>(
-                <article class="tarjeta">
+                <article class="tarjeta" data-tipo={p.tipo} data-nombre={p.nombre} data-tamano={p.tamano}>
                     <h2>{p.nombre}</h2>
                     <p>{p.tipo} · {p.tamano}</p>
                     <p>{p.precio.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</p>
                 </article>
             ))}
-        </div>        
+        </div>
     </section>
 </Layout>
+
+<script>
+    const buscador = document.querySelector<HTMLInputElement>('#buscar');
+    const selectorTipo = document.querySelector<HTMLSelectElement>('#filtro-tipo');
+    const resultado = document.querySelector<HTMLElement>('#resultado');
+    const tarjetas = document.querySelectorAll<HTMLElement>('.tarjeta');
+
+    // Muestra u oculta cada tarjeta según el texto escrito y el tipo elegido
+    function filtrar() {
+        if (!buscador || !selectorTipo || !resultado) return;
+
+        const texto = buscador.value.toLowerCase().trim();
+        const tipo = selectorTipo.value;
+        let visibles = 0;
+
+        tarjetas.forEach((tarjeta) => {
+            // El texto se busca en el nombre, el tipo y el tamaño juntos
+            const contenido =
+                `${tarjeta.dataset.nombre} ${tarjeta.dataset.tipo} ${tarjeta.dataset.tamano}`.toLowerCase();
+
+            const coincideTexto = contenido.includes(texto);
+            const coincideTipo = tipo === '' || tarjeta.dataset.tipo === tipo;
+            const coincide = coincideTexto && coincideTipo;
+
+            tarjeta.hidden = !coincide;
+            if (coincide) visibles++;
+        });
+
+        // Mensaje para el usuario (y para lectores de pantalla)
+        resultado.textContent = visibles === 0
+            ? 'No hay productos que coincidan con la búsqueda.'
+            : `${visibles} ${visibles === 1 ? 'producto' : 'productos'}`;
+    }
+
+    buscador?.addEventListener('input', filtrar);
+    selectorTipo?.addEventListener('change', filtrar);
+    filtrar();
+</script>

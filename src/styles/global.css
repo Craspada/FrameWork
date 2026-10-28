@@ -422,6 +422,40 @@ footer {
     margin-top: 1.5rem;
 }
 
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+ 
+.filtros label {
+    font-weight: 700;
+}
+ 
+.filtros input,
+.filtros select {
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--gris);
+    border-radius: 6px;
+    background: var(--blanco);
+    font: inherit;
+}
+ 
+.filtros input:focus,
+.filtros select:focus {
+    outline: 2px solid var(--rojo-osc);
+    outline-offset: 1px;
+    border-color: var(--rojo-osc);
+}
+ 
+#resultado {
+    margin: 0;
+    width: 100%;
+    color: var(--gris);
+}
+
 [hidden] {
     display: none !important;
 }
