@@ -323,8 +323,12 @@ footer {
 .formulario {
     display: grid;
     gap: 0.5rem;
-    max-width: 24rem;
-    margin-top: 1.5rem;
+    max-width: 30rem;
+    margin: 1.5rem auto 0;
+    padding: 2rem;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
 }
 
 .formulario label {
@@ -338,6 +342,15 @@ footer {
     border-radius: 6px;
     font: inherit;
     resize: vertical;
+    width: 100%;
+    background: var(--blanco);
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+    outline: 2px solid var(--rojo-osc);
+    outline-offset: 1px;
+    border-color: var(--rojo-osc);
 }
 
 .boton {
@@ -368,6 +381,13 @@ footer {
     margin: 0;
     color: var(--verde);
     font-weight: 700;
+}
+
+.contacto-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    align-items: start;
 }
 
 .panel-cuenta {

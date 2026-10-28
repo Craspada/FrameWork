@@ -35,7 +35,7 @@ import Layout from '../layouts/Layout.astro';
 
             const nombre = form.nombre.value.trim();
             const correo = form.correo.value.trim();
-            const telefono = form.telefono.value.trim();
+            const telefono = form.telefono.value.replace(/\s/g, '');
             const mensajeTexto = form.mensaje.value.trim();
 
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
