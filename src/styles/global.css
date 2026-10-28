@@ -224,6 +224,13 @@ main {
     display: inline-block;
     text-decoration: none;
 }
+
+.tabla-compras {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
 footer {
     padding: 3.5rem max(1.5rem, calc((100% - 1200px) / 2)) 1.25rem;
     background: var(--carbon);

@@ -18,11 +18,13 @@ import Layout from "../layouts/Layout.astro";
             <button type="submit" class="boton">Ingresar</button>
         </form>
 
+        <!-- 
         <div id="panel-cuenta" class="panel-cuenta" hidden>
             <h2 id="saludo"></h2>
             <p id="detalle"></p>
             <button type="button" id="boton-salir" class="boton">Cerrar sesión</button>
         </div>
+        -->
     </section>
 </Layout>
 
@@ -71,12 +73,13 @@ import Layout from "../layouts/Layout.astro";
         if (mensaje) mensaje.textContent = '';
         // Se guarda solo lo necesario, nunca la contraseña.
         sessionStorage.setItem('sesion', JSON.stringify({
+            id_cliente: usuario.id_cliente,
             nombre: usuario.Nombre_apellido,
             descuento: usuario.descuento,
             prioritaria: usuario.atencion_prioritaria,
         }));
         form.reset();
-        mostrar();
+        window.location.href = '/panel';
     });
 
     botonSalir?.addEventListener('click', () => {
@@ -84,5 +87,7 @@ import Layout from "../layouts/Layout.astro";
         mostrar();
     });
 
-    mostrar();
+    if (sessionStorage.getItem('sesion')) {
+        window.location.replace('/panel');
+    }
 </script>

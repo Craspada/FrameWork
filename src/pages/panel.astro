@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="ExtinPro | Mi cuenta">
+    <section id="panel" class="contenedor" hidden>
+        <h1 id="saludo"></h1>
+        <p id="detalle"></p>
+
+        <h2>Historial de compras</h2>
+        <table class="tabla-compras">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpo-compras"></tbody>
+        </table>
+
+        <button type="button" id="boton-salir" class="boton">Cerrar sesión</button>
+    </section>
+</Layout>
