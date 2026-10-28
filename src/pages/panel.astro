@@ -1,12 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 ---
-
+ 
 <Layout title="ExtinPro | Mi cuenta">
+    <!-- Oculto hasta comprobar que hay una sesión iniciada -->
     <section id="panel" class="contenedor" hidden>
         <h1 id="saludo"></h1>
         <p id="detalle"></p>
-
+ 
         <h2>Historial de compras</h2>
         <table class="tabla-compras">
             <thead>
@@ -19,7 +20,78 @@ import Layout from "../layouts/Layout.astro";
             </thead>
             <tbody id="cuerpo-compras"></tbody>
         </table>
-
+ 
         <button type="button" id="boton-salir" class="boton">Cerrar sesión</button>
     </section>
 </Layout>
+ 
+<script>
+    import { compras } from "../data/compras";
+    import { productos } from "../data/productos";
+ 
+    const panel = document.querySelector<HTMLElement>('#panel');
+    const saludo = document.querySelector<HTMLElement>('#saludo');
+    const detalle = document.querySelector<HTMLElement>('#detalle');
+    const cuerpo = document.querySelector<HTMLElement>('#cuerpo-compras');
+    const botonSalir = document.querySelector<HTMLElement>('#boton-salir');
+ 
+    // Formato de dinero chileno, por ejemplo $11.990
+    const pesos = (valor: number) =>
+        valor.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+ 
+    // Crea una fila de la tabla con los textos recibidos
+    function crearFila(textos: string[]) {
+        const fila = document.createElement('tr');
+        for (const texto of textos) {
+            const celda = document.createElement('td');
+            celda.textContent = texto;
+            fila.appendChild(celda);
+        }
+        return fila;
+    }
+ 
+    // 1. Sin sesión iniciada, se vuelve al login
+    const guardada = sessionStorage.getItem('sesion');
+    if (!guardada) {
+        window.location.replace('/login');
+    } else if (panel && saludo && detalle && cuerpo) {
+        const sesion = JSON.parse(guardada);
+ 
+        // 2. Saludo y datos del cliente
+        saludo.textContent = `Hola, ${sesion.nombre}`;
+        detalle.textContent =
+            `Tu descuento es del ${sesion.descuento}%` +
+            (sesion.prioritaria ? '. Tienes atención prioritaria.' : '');
+ 
+        // 3. Solo las compras de este cliente
+        const misCompras = compras.filter((c) => c.id_cliente === sesion.id_cliente);
+ 
+        if (misCompras.length === 0) {
+            const fila = crearFila(['Aún no tienes compras registradas', '', '', '']);
+            cuerpo.appendChild(fila);
+        }
+ 
+        // 4. Una fila por compra: se busca el producto y se calcula el total con descuento
+        for (const compra of misCompras) {
+            const producto = productos.find((p) => p.id === compra.id_producto);
+            if (!producto) continue;
+ 
+            const total = producto.precio * compra.cantidad * (1 - sesion.descuento / 100);
+            cuerpo.appendChild(crearFila([
+                compra.fecha,
+                producto.nombre,
+                String(compra.cantidad),
+                pesos(total),
+            ]));
+        }
+ 
+        // 5. Ya hay sesión válida: se muestra el panel
+        panel.hidden = false;
+    }
+ 
+    // Cerrar sesión: se borra la sesión y se vuelve al login
+    botonSalir?.addEventListener('click', () => {
+        sessionStorage.removeItem('sesion');
+        window.location.replace('/login');
+    });
+</script>

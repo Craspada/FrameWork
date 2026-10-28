@@ -17,50 +17,27 @@ import Layout from "../layouts/Layout.astro";
 
             <button type="submit" class="boton">Ingresar</button>
         </form>
-
-        <!-- 
-        <div id="panel-cuenta" class="panel-cuenta" hidden>
-            <h2 id="saludo"></h2>
-            <p id="detalle"></p>
-            <button type="button" id="boton-salir" class="boton">Cerrar sesión</button>
-        </div>
-        -->
     </section>
 </Layout>
 
 <script>
-    import { usuarios} from "../data/usuarios";
+    import { usuarios } from "../data/usuarios";
 
     const form = document.querySelector<HTMLFormElement>('#form-login');
-    const panel = document.querySelector<HTMLElement>('#panel-cuenta');
-    const saludo = document.querySelector<HTMLElement>('#saludo');
-    const detalle = document.querySelector<HTMLElement>('#detalle');
     const mensaje = document.querySelector<HTMLElement>('#mensaje');
-    const botonSalir = document.querySelector<HTMLElement>('#boton-salir');
 
-    function mostrar() {
-        if (!form || !panel || !saludo || !detalle) return;
-        const guardada = sessionStorage.getItem('sesion');
-
-        if (guardada) {
-            const sesion = JSON.parse(guardada);
-            saludo.textContent = `Hola, ${sesion.nombre}`;
-            detalle.textContent =
-                `Tu descuento es del ${sesion.descuento}%` +
-                (sesion.prioritaria ? '. Tienes atención prioritaria.' : '');
-            form.hidden = true;
-            panel.hidden = false;
-        } else {
-            form.hidden = false;
-            panel.hidden = true;
-        }
+    // Si ya hay una sesión iniciada, se va directo al panel
+    if (sessionStorage.getItem('sesion')) {
+        window.location.replace('/panel');
     }
+
     form?.addEventListener('submit', (evento) => {
         evento.preventDefault();
         const datos = new FormData(form);
         const id = Number(datos.get('id_cliente'));
         const clave = String(datos.get('contrasena'));
 
+        // Se busca un usuario que coincida con el N° de cliente y la contraseña
         const usuario = usuarios.find(
             (u) => u.id_cliente === id && u.contrasena === clave
         );
@@ -71,7 +48,8 @@ import Layout from "../layouts/Layout.astro";
         }
 
         if (mensaje) mensaje.textContent = '';
-        // Se guarda solo lo necesario, nunca la contraseña.
+
+        // Simulación: se guarda solo lo necesario, nunca la contraseña.
         sessionStorage.setItem('sesion', JSON.stringify({
             id_cliente: usuario.id_cliente,
             nombre: usuario.Nombre_apellido,
@@ -81,13 +59,4 @@ import Layout from "../layouts/Layout.astro";
         form.reset();
         window.location.href = '/panel';
     });
-
-    botonSalir?.addEventListener('click', () => {
-        sessionStorage.removeItem('sesion');
-        mostrar();
-    });
-
-    if (sessionStorage.getItem('sesion')) {
-        window.location.replace('/panel');
-    }
 </script>
