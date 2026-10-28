@@ -6,7 +6,7 @@ import Layout from '../layouts/Layout.astro';
     <section id="Contacto" class="contenedor">
         <h1>Contáctanos</h1>
 
-        <form id="form-contacto" class="formulario">
+        <form id="form-contacto" class="formulario" novalidate>
             <label for="nombre">Nombre y Apellido</label>
             <input id="nombre" name="nombre" type="text" required autocomplete="name">
 
@@ -39,7 +39,7 @@ import Layout from '../layouts/Layout.astro';
             const mensajeTexto = form.mensaje.value.trim();
 
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const telefonoRegex = /^(\*?56)?\s?9\d{8}$/;
+            const telefonoRegex = /^(\+?56)?\s?9\d{8}$/;
 
             if (nombre.length < 3) {
                 mensaje.textContent = 'Por favor, ingresa un nombre válido.';
