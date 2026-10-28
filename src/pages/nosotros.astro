@@ -1,10 +1,111 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const diferencias = [
+    {
+        titulo: 'Atención cercana y personalizada',
+        texto: 'Te acompañamos en tus consultas sobre productos, cantidades, precios y servicios.',
+    },
+    {
+        titulo: 'Precios mayoristas',
+        texto: 'Evaluamos ofertas para nuevos clientes y compras de grandes cantidades, según las condiciones de cada pedido.',
+    },
+    {
+        titulo: 'Cobertura en todo Chile',
+        texto: 'Coordinamos despachos nacionales para responder a las necesidades de cada región.',
+    },
+    {
+        titulo: 'Mantención y recarga',
+        texto: 'Además de vender extintores, ofrecemos mantención y recarga para que tus equipos estén siempre en óptimas condiciones.',
+    },
+];
+
+const clientes = [
+    'Empresas', 'Distribuidores', 'Constructoras', 'Industrias',
+    'Condominios', 'Instituciones', 'Negocios',
+];
+
+const equipo = [
+    {
+        area: 'Administración y ventas',
+        texto: 'Organiza las ventas y la atención de clientes, y coordina los pedidos mayoristas.',
+    },
+    {
+        area: 'Gestión de productos y proveedores',
+        texto: 'Controla el inventario, mantiene el contacto con proveedores y coordina los despachos a todo Chile.',
+    },
+    {
+        area: 'Plataforma digital y servicios',
+        texto: 'Desarrolla y mantiene la página web y la base de datos, y apoya el registro de mantenciones y recargas.',
+    },
+];
 ---
 
-<Layout title="ExtinPro | Sobre Nosotros">
+<Layout title="ExtinPro | Sobre nosotros">
     <section id="Nosotros" class="contenedor">
-        <h1>Sobre Nosotros</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id ex eget velit congue imperdiet...</p>
+        <h1>Sobre nosotros</h1>
+
+        <div class="nosotros-bloque">
+            <h2>Quiénes somos</h2>
+            <p>
+                ExtinPro es una empresa dedicada a la comercialización mayorista de extintores,
+                con distribución a distintas regiones de Chile. Además de la venta, ofrecemos
+                servicios de mantención y recarga de los equipos para que se mantengan en óptimas
+                condiciones y brindarte el mejor servicio.
+            </p>
+        </div>
+
+        <div class="nosotros-bloque">
+            <h2>El problema que resolvemos</h2>
+            <p>
+                Las empresas necesitan adquirir extintores y acceder a servicios para mantenerlos.
+                ExtinPro facilita la compra en cantidades mayoristas y coordina la distribución en
+                el país, ayudando a la prevención y a la preparación ante emergencias con productos
+                y servicios de seguridad contra incendios.
+            </p>
+        </div>
+
+        <div class="nosotros-bloque">
+            <h2>Qué nos diferencia</h2>
+            <div class="grilla-tarjetas">
+                {diferencias.map(d => (
+                    <article class="tarjeta">
+                        <h3>{d.titulo}</h3>
+                        <p>{d.texto}</p>
+                    </article>
+                ))}
+            </div>
+        </div>
+
+        <div class="nosotros-bloque">
+            <h2>A quién atendemos</h2>
+            <p>
+                Atendemos especialmente a organizaciones que necesitan comprar varios equipos para
+                sus instalaciones o para su propia actividad comercial, y que buscan precios
+                competitivos, productos de calidad, atención personalizada y entregas coordinadas
+                en distintas regiones.
+            </p>
+            <ul class="lista-clientes">
+                {clientes.map(c => <li>{c}</li>)}
+            </ul>
+        </div>
+
+        <div class="nosotros-bloque">
+            <h2>Nuestro equipo</h2>
+            <div class="grilla-tarjetas">
+                {equipo.map(e => (
+                    <article class="tarjeta">
+                        <h3>{e.area}</h3>
+                        <p>{e.texto}</p>
+                    </article>
+                ))}
+            </div>
+
+            <div class="nosotros-organigrama">
+                <h2>Organigrama</h2>
+                <p>Conoce la estructura de nuestra organización</p>
+                <img src="/img/organigrama.png" alt="Organigrama de ExtinPro" />
+            </div>
+        </div>
     </section>
 </Layout>
