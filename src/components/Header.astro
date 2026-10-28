@@ -30,13 +30,6 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
                     {label}
                 </a>
             ))}
-            <a
-                class="nav-privacy"
-                href="/politica-privacidad"
-                aria-current={currentPath === '/politica-privacidad' ? 'page' : undefined}
-            >
-                Privacidad
-            </a>
             <a class="nav-cta" href="/contacto">Hablemos</a>
         </nav>
     </div>

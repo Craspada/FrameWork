@@ -1,10 +1,43 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// Datos del responsable, tomados del texto de la política del equipo
+const responsable = [
+    { campo: 'Razón social', valor: 'EXTINTORES EXTIN PRO KEVIN ESTEBAN TRUJILLO DEL VALLE E.I.R.L.' },
+    { campo: 'Nombre comercial', valor: 'ExtinPro' },
+    { campo: 'RUT', valor: '67.454.196-1' },
+    { campo: 'País', valor: 'Chile' },
+    { campo: 'Sitio web', valor: 'extinpro.cl' },
+];
 ---
 
 <Layout title="ExtinPro | Política de Privacidad">
-    <section id="PoliticaPrivacidad" class="contenedor">
-        <h1>Política de Privacidad</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id ex eget velit congue imperdiet...</p>
+    <section id="PoliticaPrivacidad" class="contenedor texto-legal">
+        <h1>Política de Privacidad – ExtinPro</h1>
+        <p class="legal-fecha">Última actualización: 3 de septiembre de 2026</p>
+
+        <p>
+            En ExtinPro nos comprometemos a proteger la privacidad y los datos personales de
+            nuestros clientes, potenciales clientes y usuarios de nuestros canales de atención al
+            cliente.
+        </p>
+        <p>
+            La presente Política de Privacidad explica qué información podemos recopilar, para
+            qué la utilizamos y cómo es tratada cuando una persona se comunica con ExtinPro a
+            través de nuestro sitio web, WhatsApp u otros canales de atención.
+        </p>
+
+        <h2>Responsable del tratamiento</h2>
+        <p>El responsable del tratamiento de los datos personales es:</p>
+        <dl class="legal-datos">
+            {responsable.map(d => (
+                <>
+                    <dt>{d.campo}</dt>
+                    <dd>{d.valor}</dd>
+                </>
+            ))}
+            <dt>Correo de contacto</dt>
+            <dd><a href="mailto:extinpro.88@gmail.com">extinpro.88@gmail.com</a></dd>
+        </dl>
     </section>
 </Layout>
