@@ -5,6 +5,75 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="ExtinPro | Contáctanos">
     <section id="Contacto" class="contenedor">
         <h1>Contáctanos</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id ex eget velit congue imperdiet...</p>
+
+        <form id="form-contacto" class="formulario">
+            <label for="nombre">Nombre y Apellido</label>
+            <input id="nombre" name="nombre" type="text" required autocomplete="name">
+
+            <label for="correo">Correo Electrónico</label>
+            <input id="correo" name="correo" type="email" required autocomplete="email">
+
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" name="telefono" type="tel" required autocomplete="tel">
+
+            <label for="mensaje-texto">Mensaje</label>
+            <textarea id="mensaje-texto" name="mensaje" rows="5" required></textarea>
+
+            <p id="mensaje" class="mensaje-error" role="alert"></p>
+            <button type="submit" class="boton">Enviar</button>
+        </form>
     </section>
 </Layout>
+
+<script>
+    const form = document.querySelector<HTMLFormElement>('#form-contacto');
+    const mensaje = document.querySelector<HTMLElement>('#mensaje');
+
+    if (form && mensaje) {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const nombre = form.nombre.value.trim();
+            const correo = form.correo.value.trim();
+            const telefono = form.telefono.value.trim();
+            const mensajeTexto = form.mensaje.value.trim();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const telefonoRegex = /^(\*?56)?\s?9\d{8}$/;
+
+            if (nombre.length < 3) {
+                mensaje.textContent = 'Por favor, ingresa un nombre válido.';
+                mensaje.classList.remove('mensaje-exito');
+                mensaje.classList.add('mensaje-error');
+                return;
+            }
+
+            if (!emailRegex.test(correo)) {
+                mensaje.textContent = 'Ingresa un correo electrónico válido.';
+                mensaje.classList.remove('mensaje-exito');
+                mensaje.classList.add('mensaje-error');
+                return;
+            }
+
+            if (!telefonoRegex.test(telefono)) {
+                mensaje.textContent = 'Ingresa un número de teléfono válido (ejemplo: 56912345678).';
+                mensaje.classList.remove('mensaje-exito');
+                mensaje.classList.add('mensaje-error');
+                return;
+            }
+
+            if (mensajeTexto.length === 0) {
+                mensaje.textContent = 'Por favor, ingresa un mensaje.';
+                mensaje.classList.remove('mensaje-exito');
+                mensaje.classList.add('mensaje-error');
+                return;
+            }
+
+            mensaje.textContent = '¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.';
+            mensaje.classList.remove('mensaje-error');
+            mensaje.classList.add('mensaje-exito');
+
+            form.reset();
+        });
+    }
+</script>
