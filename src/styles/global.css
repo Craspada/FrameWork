@@ -580,7 +580,7 @@ footer {
 }
 
 @media (min-width: 700px) {
-    .nosotros-fila-invertida .nosotros-texto {
+    .nosotros-fila.invertida .nosotros-texto {
         order: 2;
     }
 }
