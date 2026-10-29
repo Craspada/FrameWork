@@ -24,6 +24,7 @@ import { productos } from '../data/productos.ts';
         <div class="grilla-productos">
             {productos.map(p =>(
                 <article class="tarjeta" data-tipo={p.tipo} data-nombre={p.nombre} data-tamano={p.tamano}>
+                    <img src={'/img/productos/${p.imagen}'} alt={'Extintor ${p.tipo}'} width="300" height="300" loading="lazy">
                     <h2>{p.nombre}</h2>
                     <p>{p.tipo} · {p.tamano}</p>
                     <p>{p.precio.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</p>
