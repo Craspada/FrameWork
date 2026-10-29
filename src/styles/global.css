@@ -480,6 +480,25 @@ footer {
     line-height: 1.6;
 }
 
+.nosotros-fila {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: center;
+}
+
+.nosotros-fila img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.nosotros-texto p {
+    line-height: 1.6;
+    max-width: 70ch;
+}
+
 .grilla-tarjetas {
     display : grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -560,6 +579,11 @@ footer {
     display: none !important;
 }
 
+@media (min-width: 700px) {
+    .nosotros-fila-invertida .nosotros-texto {
+        order: 2;
+    }
+}
 
 @media (max-width: 960px) {
     .header-inner {
