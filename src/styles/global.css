@@ -575,6 +575,29 @@ footer {
     line-height: 1.5;
 }
 
+.carrito-lateral {
+    width: min(100%, 26rem);
+    height: 100dvh;
+    max-height: none;
+    margin: 0 0 0 auto;   /* pegado a la derecha */
+    padding: 0;
+    border: 0;
+}
+
+.carrito-lateral::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.carrito-lateral[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.lista-carrito {
+    flex: 1;
+    overflow-y: auto;   /* la lista hace scroll, la cabecera y el pie no */
+}
+
 [hidden] {
     display: none !important;
 }
