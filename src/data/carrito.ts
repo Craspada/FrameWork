@@ -13,6 +13,7 @@ export function leerCarrito(): ItemCarrito[] {
 
 function guardarCarrito(lista: ItemCarrito[]) {
     localStorage.setItem(CLAVE, JSON.stringify(lista));
+    window.dispatchEvent(new Event('carrito-cambio'));    
 }
 
 export function agregar(id: number) {
@@ -44,10 +45,9 @@ export function quitar(id: number) {
 
 export function vaciar() {
     localStorage.removeItem(CLAVE);
+    window.dispatchEvent(new Event('carrito-cambio'));
 }
 
 export function totalCantidad(): number {
     return leerCarrito().reduce((suma, item) => suma + item.cantidad, 0);
 }
-
-window.dispatchEvent(new Event('carrito-cambio'));
