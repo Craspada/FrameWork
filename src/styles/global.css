@@ -598,6 +598,39 @@ footer {
     overflow-y: auto;   /* la lista hace scroll, la cabecera y el pie no */
 }
 
+.boton-carrito {
+    position: relative;
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--blanco);
+    color: var(--carbon);
+    cursor: pointer;
+}
+
+.boton-carrito:hover {
+    color: var(--rojo);
+}
+
+.contador-carrito {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--rojo-osc);
+    color: var(--blanco);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+}
+
 [hidden] {
     display: none !important;
 }

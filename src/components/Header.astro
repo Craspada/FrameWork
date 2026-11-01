@@ -32,6 +32,16 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
             ))}
             <a class="nav-cta" href="/contacto">Hablemos</a>
         </nav>
+
+        <button type="button" id="boton-carrito" class="boton-carrito" aria-label="Abrir carrito">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="20" r="1.5"></circle>
+                <circle cx="18" cy="20" r="1.5"></circle>
+                <path d="M2 3h3l2.7 12.4a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 7H6"></path>
+            </svg>
+            <span id="contador-carrito" class="contador-carrito" hidden>0</span>
+        </button>        
     </div>
 </header>
 
@@ -61,4 +71,28 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
             if (event.key === 'Escape') closeMenu();
         });
     }
+</script>
+
+<script>
+    import { totalCantidad } from "../data/carrito";
+
+    const botonCarrito = document.querySelector<HTMLButtonElement>('#boton-carrito');
+    const contador = document.querySelector<HTMLSpanElement>('#contador-carrito');
+
+    function actualizar() {
+        if (!botonCarrito || !contador) return;
+
+        const n = totalCantidad();
+        contador.textContent = String(n);
+        contador.hidden = n === 0;
+        botonCarrito.setAttribute('aria-label', `Abrir carrito, ${n} ${n === 1 ? 'unidad' : 'unidades'}`);
+    }
+
+    window.addEventListener('carrito-cambio', actualizar);
+    window.addEventListener('storage', actualizar);
+    actualizar();
+
+    botonCarrito?.addEventListener('click', () => {
+        document.querySelector<HTMLDialogElement>('#carrito')?.showModal();
+    });
 </script>
