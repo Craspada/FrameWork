@@ -26,7 +26,7 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
  
 <script>
-    import { compras } from "../data/compras";
+    import { compras, leerComprasNuevas } from "../data/compras";
     import { productos } from "../data/productos";
  
     const panel = document.querySelector<HTMLElement>('#panel');
@@ -63,8 +63,8 @@ import Layout from "../layouts/Layout.astro";
             `Tu descuento es del ${sesion.descuento}%` +
             (sesion.prioritaria ? '. Tienes atención prioritaria.' : '');
  
-        // 3. Solo las compras de este cliente
-        const misCompras = compras.filter((c) => c.id_cliente === sesion.id_cliente);
+        // 3. Solo las compras de este cliente (las de prueba y las hechas desde el carrito)
+        const misCompras = [...compras, ...leerComprasNuevas()].filter((c) => c.id_cliente === sesion.id_cliente);
  
         if (misCompras.length === 0) {
             const fila = crearFila(['Aún no tienes compras registradas', '', '', '']);

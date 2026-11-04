@@ -1,13 +1,14 @@
 <dialog id="carrito" class="carrito-lateral" aria-labelledby="carrito-titulo">
-    <header class="carrito-cabecera">
+    <div class="carrito-cabecera">
         <h2 id="carrito-titulo">Tu carrito</h2>
         <button type="button" id="cerrar-carrito" aria-label="Cerrar carrito">✕</button>
-    </header>
+    </div>
 
-    <p id="carrito-vacio" hidden>Tu carrito está vacío.</p>
+    <p id="carrito-vacio" class="carrito-vacio" hidden>Tu carrito está vacío.</p>
     <ul id="carrito-lista" class="lista-carrito"></ul>
+    <p id="mensaje-compra" class="mensaje-compra" role="status"></p>
 
-    <footer class="carrito-pie">
+    <div id="carrito-pie" class="carrito-pie">
         <dl class="resumen-datos">
             <dt>Subtotal</dt>
             <dd id="subtotal"></dd>
@@ -16,8 +17,143 @@
             <dt class="resumen-total">Total</dt>
             <dd id="total" class="resumen-total"></dd>
         </dl>
-        <p id="aviso-descuento"></p>
+        <p id="aviso-descuento" class="aviso-descuento"></p>
         <button type="button" id="finalizar-compra" class="boton">Finalizar compra</button>
-        <p id="mensaje-compra" role="status"></p>
-    </footer>
+    </div>
 </dialog>
+
+<script>
+    import { leerCarrito, cambiarCantidad, quitar, vaciar } from '../data/carrito';
+    import { productos } from '../data/productos';
+    import { registrarCompra } from '../data/compras';
+
+    const dialogo = document.querySelector<HTMLDialogElement>('#carrito');
+    const lista = document.querySelector<HTMLElement>('#carrito-lista');
+    const vacio = document.querySelector<HTMLElement>('#carrito-vacio');
+    const pie = document.querySelector<HTMLElement>('#carrito-pie');
+    const subtotalEl = document.querySelector<HTMLElement>('#subtotal');
+    const descuentoEl = document.querySelector<HTMLElement>('#descuento');
+    const totalEl = document.querySelector<HTMLElement>('#total');
+    const avisoDescuento = document.querySelector<HTMLElement>('#aviso-descuento');
+    const mensaje = document.querySelector<HTMLElement>('#mensaje-compra');
+    const botonFinalizar = document.querySelector<HTMLButtonElement>('#finalizar-compra');
+
+    // Formato de dinero chileno, por ejemplo $11.990
+    const pesos = (valor: number) =>
+        valor.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+
+    // Datos del cliente si inició sesión (null si no lo hizo)
+    function leerSesion() {
+        try {
+            const guardada = sessionStorage.getItem('sesion');
+            return guardada ? JSON.parse(guardada) : null;
+        } catch {
+            return null;
+        }
+    }
+
+    // Crea un <p> con texto y una clase opcional
+    function crearTexto(texto: string, clase = '') {
+        const p = document.createElement('p');
+        p.textContent = texto;
+        if (clase) p.className = clase;
+        return p;
+    }
+
+    // Dibuja la lista del carrito y calcula los totales
+    function dibujar() {
+        if (!lista || !vacio || !pie || !subtotalEl || !descuentoEl || !totalEl || !avisoDescuento) return;
+
+        const items = leerCarrito();
+        const sesion = leerSesion();
+        let subtotal = 0;
+
+        lista.replaceChildren();
+
+        for (const item of items) {
+            const producto = productos.find((p) => p.id === item.id);
+            if (!producto) continue; // el producto ya no existe en el catálogo
+
+            const subtotalItem = producto.precio * item.cantidad;
+            subtotal += subtotalItem;
+
+            const fila = document.createElement('li');
+            fila.className = 'item-carrito';
+
+            const info = document.createElement('div');
+            const nombre = document.createElement('h3');
+            nombre.textContent = producto.nombre;
+            info.append(
+                nombre,
+                crearTexto(`${producto.tipo} · ${producto.tamano}`),
+                crearTexto(`${pesos(producto.precio)} c/u`)
+            );
+
+            const campo = document.createElement('input');
+            campo.type = 'number';
+            campo.min = '1';
+            campo.value = String(item.cantidad);
+            campo.setAttribute('aria-label', `Cantidad de ${producto.nombre}`);
+            campo.addEventListener('change', () => cambiarCantidad(item.id, Number(campo.value)));
+
+            const quitarBtn = document.createElement('button');
+            quitarBtn.type = 'button';
+            quitarBtn.className = 'boton-quitar';
+            quitarBtn.textContent = 'Quitar';
+            quitarBtn.setAttribute('aria-label', `Quitar ${producto.nombre} del carrito`);
+            quitarBtn.addEventListener('click', () => quitar(item.id));
+
+            fila.append(info, campo, crearTexto(pesos(subtotalItem), 'item-subtotal'), quitarBtn);
+            lista.appendChild(fila);
+        }
+
+        // Descuento del cliente (0 si no hay sesión)
+        const porcentaje = sesion ? Number(sesion.descuento) || 0 : 0;
+        const descuento = Math.round((subtotal * porcentaje) / 100);
+
+        subtotalEl.textContent = pesos(subtotal);
+        descuentoEl.textContent = descuento > 0 ? `-${pesos(descuento)}` : pesos(0);
+        totalEl.textContent = pesos(subtotal - descuento);
+        avisoDescuento.textContent = sesion
+            ? `Descuento de cliente aplicado: ${porcentaje}%`
+            : 'Inicia sesión en "Mi cuenta" para aplicar tu descuento.';
+
+        // Con el carrito vacío solo se muestra el mensaje de "vacío"
+        const hayProductos = lista.children.length > 0;
+        vacio.hidden = hayProductos;
+        pie.hidden = !hayProductos;
+        if (hayProductos && mensaje) mensaje.textContent = '';
+    }
+
+    // Finalizar compra (simulado): exige sesión, guarda la compra y vacía el carrito
+    botonFinalizar?.addEventListener('click', () => {
+        if (!mensaje) return;
+
+        const items = leerCarrito();
+        if (items.length === 0) return;
+
+        const sesion = leerSesion();
+        if (!sesion) {
+            const enlace = document.createElement('a');
+            enlace.href = '/login';
+            enlace.textContent = 'Ir a Mi cuenta';
+            mensaje.replaceChildren('Para finalizar tu compra, inicia sesión. ', enlace);
+            return;
+        }
+
+        registrarCompra(sesion.id_cliente, items);
+        vaciar();
+        mensaje.textContent = '¡Compra registrada! Puedes verla en "Mi cuenta".';
+    });
+
+    // Cerrar el panel con la ✕ o haciendo clic en el fondo oscuro
+    document.querySelector('#cerrar-carrito')?.addEventListener('click', () => dialogo?.close());
+    dialogo?.addEventListener('click', (evento) => {
+        if (evento.target === dialogo) dialogo.close();
+    });
+
+    // Se redibuja al cargar y cada vez que cambia el carrito
+    window.addEventListener('carrito-cambio', dibujar);
+    window.addEventListener('storage', dibujar);
+    dibujar();
+</script>
