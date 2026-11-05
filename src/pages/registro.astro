@@ -1,0 +1,68 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+ 
+<Layout title="ExtinPro | Crear cuenta">
+    <section id="Registro" class="contenedor">
+        <h1>Crear cuenta</h1>
+ 
+        <form id="form-registro" class="formulario" novalidate>
+            <label for="nombre">Nombre y apellido</label>
+            <input id="nombre" name="nombre" type="text" required autocomplete="name">
+ 
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="correo" type="email" required autocomplete="email">
+ 
+            <label for="contrasena">Contraseña (mínimo 8 caracteres, con letras y números)</label>
+            <input id="contrasena" name="contrasena" type="password" required autocomplete="new-password">
+ 
+            <label for="repetir">Repetir contraseña</label>
+            <input id="repetir" name="repetir" type="password" required autocomplete="new-password">
+ 
+            <p id="mensaje" class="mensaje-error" role="alert"></p>
+ 
+            <button type="submit" class="boton">Crear cuenta</button>
+            <p class="texto-aparte">¿Ya tienes cuenta? <a href="/login">Ingresar</a></p>
+        </form>
+    </section>
+</Layout>
+ 
+<script>
+    import { correoExiste, registrarUsuario, iniciarSesion } from "../data/usuarios-registro";
+ 
+    const form = document.querySelector<HTMLFormElement>('#form-registro');
+    const mensaje = document.querySelector<HTMLElement>('#mensaje');
+ 
+    form?.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        if (!mensaje) return;
+ 
+        const datos = new FormData(form);
+        const nombre = String(datos.get('nombre')).trim();
+        const correo = String(datos.get('correo')).trim().toLowerCase();
+        const clave = String(datos.get('contrasena'));
+        const repetir = String(datos.get('repetir'));
+ 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ 
+        // Se valida de arriba hacia abajo; el primer error se muestra y se detiene
+        let error = '';
+        if (nombre.length < 3) error = 'Ingresa tu nombre y apellido.';
+        else if (!emailRegex.test(correo)) error = 'Ingresa un correo electrónico válido.';
+        else if (correoExiste(correo)) error = 'Ya existe una cuenta con ese correo.';
+        else if (clave.length < 8 || !/[A-Za-z]/.test(clave) || !/\d/.test(clave))
+            error = 'La contraseña debe tener al menos 8 caracteres, con letras y números.';
+        else if (clave !== repetir) error = 'Las contraseñas no coinciden.';
+ 
+        if (error) {
+            mensaje.textContent = error;
+            return;
+        }
+ 
+        // Todo correcto: se crea el usuario y se inicia sesión
+        const usuario = registrarUsuario(nombre, correo, clave);
+        iniciarSesion(usuario);
+        window.location.href = '/panel';
+    });
+</script>
+ 

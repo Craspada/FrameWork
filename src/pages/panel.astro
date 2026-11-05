@@ -21,6 +21,12 @@ import Layout from "../layouts/Layout.astro";
             <tbody id="cuerpo-compras"></tbody>
         </table>
  
+        <h2>Recarga de extintores</h2>
+        <p>Cada extintor debe recargarse cada 12 meses. Este temporizador cuenta el tiempo que falta.</p>
+        <p id="sin-extintores" hidden>Aún no tienes extintores para controlar.</p>
+        <ul id="lista-recargas" class="lista-recargas"></ul>
+        <a href="/contacto" class="boton boton-enlace">Solicitar recarga</a>
+
         <button type="button" id="boton-salir" class="boton">Cerrar sesión</button>
     </section>
 </Layout>
@@ -28,6 +34,7 @@ import Layout from "../layouts/Layout.astro";
 <script>
     import { compras, leerComprasNuevas } from "../data/compras";
     import { productos } from "../data/productos";
+    import { leerRecargas, registrarRecarga, calcularVencimiento, descomponer } from "../data/recargas";
  
     const panel = document.querySelector<HTMLElement>('#panel');
     const saludo = document.querySelector<HTMLElement>('#saludo');
@@ -85,7 +92,92 @@ import Layout from "../layouts/Layout.astro";
             ]));
         }
  
-        // 5. Ya hay sesión válida: se muestra el panel
+        // 5. Temporizadores de recarga: un extintor (o grupo) por cada compra
+        const lista = document.querySelector<HTMLElement>('#lista-recargas');
+        const sinExtintores = document.querySelector<HTMLElement>('#sin-extintores');
+        const DIA = 86400000;
+        // Cada elemento guarda su fecha límite para que el temporizador la use cada segundo
+        let temporizadores: { vence: Date; estado: HTMLElement; tiempo: HTMLElement; tarjeta: HTMLElement }[] = [];
+
+        function dibujarRecargas() {
+            if (!lista) return;
+            lista.replaceChildren();
+            temporizadores = [];
+            const recargas = leerRecargas();
+            let hay = false;
+
+            for (const compra of misCompras) {
+                const producto = productos.find((p) => p.id === compra.id_producto);
+                if (!producto) continue;
+                hay = true;
+
+                const clave = `${compra.id_venta}-${compra.id_producto}`;
+                // Si ya se recargó, se cuenta desde esa fecha; si no, desde la compra
+                const base = recargas[clave] ?? compra.fecha;
+
+                const item = document.createElement('li');
+                item.className = 'recarga';
+
+                const titulo = document.createElement('p');
+                titulo.className = 'recarga-titulo';
+                titulo.textContent = `${producto.nombre} (x${compra.cantidad})`;
+
+                const detalle = document.createElement('p');
+                detalle.className = 'recarga-detalle';
+                const vence = calcularVencimiento(base);
+                detalle.textContent = `${recargas[clave] ? 'Última recarga' : 'Comprado'}: ${base} · Próxima recarga: ${vence.toLocaleDateString('sv-SE')}`;
+
+                const estado = document.createElement('p');
+                estado.className = 'recarga-estado';
+
+                const tiempo = document.createElement('p');
+                tiempo.className = 'recarga-tiempo';
+
+                const boton = document.createElement('button');
+                boton.type = 'button';
+                boton.className = 'boton boton-secundario';
+                boton.textContent = 'Marcar como recargado hoy';
+                boton.addEventListener('click', () => {
+                    registrarRecarga(clave);
+                    dibujarRecargas();
+                });
+
+                item.append(titulo, detalle, estado, tiempo, boton);
+                lista.appendChild(item);
+                temporizadores.push({ vence, estado, tiempo, tarjeta: item });
+            }
+
+            if (sinExtintores) sinExtintores.hidden = hay;
+            actualizarTiempos();
+        }
+
+        // Se ejecuta cada segundo: calcula cuánto falta y cambia el color según el estado
+        function actualizarTiempos() {
+            const ahora = Date.now();
+            for (const t of temporizadores) {
+                const falta = t.vence.getTime() - ahora;
+                const { dias, horas, minutos, segundos } = descomponer(falta);
+                const reloj = `${dias} d ${String(horas).padStart(2, '0')} h ${String(minutos).padStart(2, '0')} min ${String(segundos).padStart(2, '0')} s`;
+
+                let clase = 'vigente';
+                let texto = 'Vigente';
+                if (falta <= 0) {
+                    clase = 'vencido';
+                    texto = 'Recarga vencida';
+                } else if (falta <= 30 * DIA) {
+                    clase = 'proximo';
+                    texto = 'Recarga próxima';
+                }
+                t.tarjeta.className = `recarga recarga-${clase}`;
+                t.estado.textContent = texto;
+                t.tiempo.textContent = falta <= 0 ? `Vencida hace ${reloj}` : `Faltan ${reloj}`;
+            }
+        }
+
+        dibujarRecargas();
+        setInterval(actualizarTiempos, 1000);
+
+        // 6. Ya hay sesión válida: se muestra el panel
         panel.hidden = false;
     }
  

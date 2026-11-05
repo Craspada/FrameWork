@@ -807,6 +807,78 @@ footer {
     border-radius: 10px;
 }
 
+/* ===== Registro / enlaces auxiliares ===== */
+.texto-aparte {
+    margin: 0;
+    text-align: center;
+}
+
+.boton-enlace {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.boton-secundario {
+    background: var(--carbon);
+}
+
+/* ===== Recarga de extintores ===== */
+.lista-recargas {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.recarga {
+    padding: 1rem;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-left: 6px solid var(--verde);
+    border-radius: 10px;
+}
+
+.recarga p {
+    margin: 0 0 0.4rem;
+}
+
+.recarga-titulo {
+    font-weight: 700;
+}
+
+.recarga-detalle {
+    font-size: 0.9rem;
+}
+
+.recarga-estado {
+    font-weight: 700;
+    color: var(--verde);
+}
+
+.recarga-tiempo {
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.recarga-proximo {
+    border-left-color: #B26A00;
+}
+
+.recarga-proximo .recarga-estado {
+    color: #8A5300;
+}
+
+.recarga-vencido {
+    border-left-color: var(--rojo-osc);
+}
+
+.recarga-vencido .recarga-estado {
+    color: var(--rojo-osc);
+}
+
 @media (min-width: 700px) {
     .nosotros-fila.invertida .nosotros-texto {
         order: 2;

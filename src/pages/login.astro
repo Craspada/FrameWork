@@ -16,12 +16,13 @@ import Layout from "../layouts/Layout.astro";
             <p id="mensaje" class="mensaje-error" role="alert"></p>
 
             <button type="submit" class="boton">Ingresar</button>
+            <p class="texto-aparte">¿No tienes cuenta? <a href="/registro">Crear cuenta</a></p>
         </form>
     </section>
 </Layout>
 
 <script>
-    import { usuarios } from "../data/usuarios";
+    import { buscarUsuario, iniciarSesion } from "../data/usuarios-registro";
 
     const form = document.querySelector<HTMLFormElement>('#form-login');
     const mensaje = document.querySelector<HTMLElement>('#mensaje');
@@ -37,10 +38,8 @@ import Layout from "../layouts/Layout.astro";
         const correo = String(datos.get('correo')).trim().toLowerCase();
         const clave = String(datos.get('contrasena'));
 
-        // Se busca un usuario que coincida con el correo y la contraseña
-        const usuario = usuarios.find(
-            (u) => u.correo === correo && u.contrasena === clave
-        );
+        // Busca entre los usuarios de prueba y los registrados desde la web
+        const usuario = buscarUsuario(correo, clave);
 
         if (!usuario) {
             if (mensaje) mensaje.textContent = 'Correo o contraseña incorrectos.';
@@ -50,12 +49,7 @@ import Layout from "../layouts/Layout.astro";
         if (mensaje) mensaje.textContent = '';
 
         // Simulación: se guarda solo lo necesario, nunca la contraseña.
-        sessionStorage.setItem('sesion', JSON.stringify({
-            id_cliente: usuario.id_cliente,
-            nombre: usuario.Nombre_apellido,
-            descuento: usuario.descuento,
-            prioritaria: usuario.atencion_prioritaria,
-        }));
+        iniciarSesion(usuario);
         form.reset();
         window.location.href = '/panel';
     });
