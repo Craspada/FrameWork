@@ -82,6 +82,7 @@ import Layout from "../layouts/Layout.astro";
         for (const compra of misCompras) {
             const producto = productos.find((p) => p.id === compra.id_producto);
             if (!producto) continue;
+            if (producto.tipo === 'Accesorios') continue;
  
             const total = producto.precio * compra.cantidad * (1 - sesion.descuento / 100);
             cuerpo.appendChild(crearFila([
