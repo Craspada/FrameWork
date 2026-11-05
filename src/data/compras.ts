@@ -1,5 +1,3 @@
-import { map } from "astro:schema";
-
 export type Compra = {
     id_venta: number;
     id_cliente: number;
