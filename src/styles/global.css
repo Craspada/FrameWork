@@ -776,6 +776,13 @@ footer {
     width: 100%;
 }
 
+.contacto-datos {
+    padding: 2rem;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+}
+
 .contacto-layout .formulario {
     margin: 0;    
     max-width: none;
@@ -816,6 +823,8 @@ footer {
 .boton-enlace {
     display: inline-block;
     text-decoration: none;
+    margin-right: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .boton-secundario {
