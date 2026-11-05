@@ -51,10 +51,10 @@ const pesos = (valor: number) =>
         <div class="contenedor franja-contenido">
             <div class="franja-texto">
                 <h2 id="t-descuentos">Descuentos para clientes</h2>
-                <p>Al ingresar a tu cuenta, el descuento se aplica solo en el carrito y en tu historial de compras. Algunos clientes también cuentan con atención prioritaria.</p>
-                <a href="/registro" class="boton">Crear cuenta</a>
+                <p id="descuento-texto">Al ingresar a tu cuenta, el descuento se aplica solo en el carrito y en tu historial de compras. Algunos clientes también cuentan con atención prioritaria.</p>
+                <a id="descuento-boton" href="/registro" class="boton">Crear cuenta</a>
             </div>
-            <div class="franja-visual descuentos">
+            <div id="descuento-visual" class="franja-visual descuentos">
                 <div class="insignia">
                     <span class="insignia-numero">10 %</span>
                     <span>de descuento en tu cuenta</span>
@@ -129,3 +129,33 @@ const pesos = (valor: number) =>
         </div>
     </section>
 </Layout>
+
+<script>
+    // Si hay una sesión iniciada, la franja de descuentos muestra el descuento real del cliente
+    // (en vez de la información general para visitantes).
+    const guardada = sessionStorage.getItem('sesion');
+    const texto = document.querySelector<HTMLElement>('#descuento-texto');
+    const boton = document.querySelector<HTMLAnchorElement>('#descuento-boton');
+    const visual = document.querySelector<HTMLElement>('#descuento-visual');
+
+    if (guardada && texto && boton && visual) {
+        const sesion = JSON.parse(guardada);
+
+        texto.textContent =
+            'Este es el descuento de tu cuenta. Se aplica solo en el carrito y en tu historial de compras.' +
+            (sesion.prioritaria ? ' Además tienes atención prioritaria.' : '');
+        boton.textContent = 'Ir a Mi cuenta';
+        boton.href = '/panel';
+
+        // Se reemplazan las insignias por una sola con el descuento actual
+        const insignia = document.createElement('div');
+        insignia.className = 'insignia';
+        const numero = document.createElement('span');
+        numero.className = 'insignia-numero';
+        numero.textContent = `${sesion.descuento} %`;
+        const detalle = document.createElement('span');
+        detalle.textContent = 'es tu descuento actual';
+        insignia.append(numero, detalle);
+        visual.replaceChildren(insignia);
+    }
+</script>
