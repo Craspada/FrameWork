@@ -1,11 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { contacto } from '../data/contacto-datos';
+
+// Dirección completa para el mapa (se codifica para usarla en la URL)
+const consulta = encodeURIComponent(`${contacto.direccion}, ${contacto.zona}`);
 ---
 
 <Layout title="ExtinPro | Contáctanos">
     <section id="Contacto" class="contenedor">
         <h1>Contáctanos</h1>
 
+        <div class="contacto-layout">
         <form id="form-contacto" class="formulario" novalidate>
             <label for="nombre">Nombre y Apellido</label>
             <input id="nombre" name="nombre" type="text" required autocomplete="name">
@@ -22,6 +27,29 @@ import Layout from '../layouts/Layout.astro';
             <p id="mensaje" class="mensaje-error" role="alert"></p>
             <button type="submit" class="boton">Enviar</button>
         </form>
+
+        <aside class="contacto-datos" aria-label="Datos de contacto">
+            <h2>Datos de contacto</h2>
+            <dl class="lista-contacto">
+                <dt>Correo</dt>
+                <dd><a href={`mailto:${contacto.correo}`}>{contacto.correo}</a></dd>
+                <dt>Teléfono</dt>
+                <dd><a href={`tel:${contacto.telefonoLink}`}>{contacto.telefono}</a></dd>
+                <dt>Dirección</dt>
+                <dd>{contacto.direccion}, {contacto.zona}</dd>
+            </dl>
+
+            <iframe
+                class="mapa"
+                title="Mapa de la ubicación de ExtinPro"
+                src={`https://www.google.com/maps?q=${consulta}&output=embed`}
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <!-- Si no hay internet el mapa no carga: queda este enlace como respaldo -->
+            <p><a href={`https://www.google.com/maps/search/?api=1&query=${consulta}`} target="_blank" rel="noopener">Abrir en Google Maps</a></p>
+        </aside>
+        </div>
     </section>
 </Layout>
 

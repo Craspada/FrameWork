@@ -776,6 +776,37 @@ footer {
     width: 100%;
 }
 
+.contacto-layout .formulario {
+    margin: 0;    
+    max-width: none;
+}
+ 
+.contacto-datos h2 {
+    margin-top: 0;
+}
+ 
+.lista-contacto {
+    display: grid;
+    gap: 0.25rem 1rem;
+    margin: 0 0 1rem;
+}
+ 
+.lista-contacto dt {
+    font-weight: 700;
+    margin-top: 0.6rem;
+}
+ 
+.lista-contacto dd {
+    margin: 0;
+}
+ 
+.mapa {
+    width: 100%;
+    height: 280px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+}
+
 @media (min-width: 700px) {
     .nosotros-fila.invertida .nosotros-texto {
         order: 2;

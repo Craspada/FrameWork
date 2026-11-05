@@ -7,8 +7,8 @@ import Layout from "../layouts/Layout.astro";
         <h1>Ingresar</h1>
 
         <form id="form-login" class="formulario" novalidate>
-            <label for="id-cliente">N° Cliente</label>
-            <input id="id-cliente" name="id_cliente" type="number" min="1" required autocomplete="username">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="correo" type="email" required autocomplete="username">
 
             <label for="contrasena">Contraseña</label>
             <input id="contrasena" name="contrasena" type="password" required autocomplete="current-password">
@@ -34,16 +34,16 @@ import Layout from "../layouts/Layout.astro";
     form?.addEventListener('submit', (evento) => {
         evento.preventDefault();
         const datos = new FormData(form);
-        const id = Number(datos.get('id_cliente'));
+        const correo = String(datos.get('correo')).trim().toLowerCase();
         const clave = String(datos.get('contrasena'));
 
-        // Se busca un usuario que coincida con el N° de cliente y la contraseña
+        // Se busca un usuario que coincida con el correo y la contraseña
         const usuario = usuarios.find(
-            (u) => u.id_cliente === id && u.contrasena === clave
+            (u) => u.correo === correo && u.contrasena === clave
         );
 
         if (!usuario) {
-            if (mensaje) mensaje.textContent = 'N° de cliente o contraseña incorrectos.';
+            if (mensaje) mensaje.textContent = 'Correo o contraseña incorrectos.';
             return;
         }
 
