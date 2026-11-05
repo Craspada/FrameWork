@@ -14,4 +14,6 @@ export const productos = [
 
     {id: 11, nombre: 'Extintor Acetato de Potasio (Clase K) 6L', tipo: 'Clase K', tamano: '6 L', precio: 144990, stock:10, imagen: 'Extintor K 6L.png'},
     {id: 12, nombre: 'Extintor Acetato de Potasio (Clase K) 10L', tipo: 'Clase K', tamano: '10 L', precio: 224990, stock:5, imagen: 'Extintor K 10L.png'},
+
+    {id: 13, nombre: 'Carrito extintor 2 ruedas', tipo: 'Accesorios', tamano: 'Todos', precio: 49990, stock:13, imagen: 'Carrito Extintor 2 ruedas.webp'},
 ]
