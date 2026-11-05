@@ -1,7 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { productos } from '../data/productos';
+ 
+const tipos = [...new Set(productos.map((p) => p.tipo))].map((tipo) => {
+    const lista = productos.filter((p) => p.tipo === tipo);
+    return {
+        tipo,
+        desde: Math.min(...lista.map((p) => p.precio)),
+        imagen: lista[0].imagen,
+    };
+});
+ 
+const pesos = (valor: number) =>
+    valor.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
 ---
-
+ 
 <Layout title="ExtinPro | Inicio">
     <section class="hero">
         <div class="contenedor hero-contenido">
@@ -10,6 +23,108 @@ import Layout from '../layouts/Layout.astro';
             <div class="hero-botones">
                 <a href="/productos" class="boton">Ver catálogo</a>
                 <a href="/contacto" class="boton">Cotizar ahora</a>
+            </div>
+        </div>
+    </section>
+ 
+    <section class="franja" aria-labelledby="t-productos">
+        <div class="contenedor franja-contenido">
+            <div class="franja-texto">
+                <h2 id="t-productos">Los extintores que vendemos</h2>
+                <p>Trabajamos con los cuatro tipos de extintor más usados, en distintos tamaños. Encuentra el tuyo con el buscador y el filtro por tipo.</p>
+                <a href="/productos" class="boton">Ver catálogo</a>
+            </div>
+            <div class="franja-visual mini-productos">
+                {tipos.map((t) => (
+                    <a href="/productos" class="mini-producto">
+                        {t.imagen && <img src={`/img/productos/${t.imagen}`} alt={`Extintor ${t.tipo}`} width="300" height="300" loading="lazy">}
+                        <strong>{t.tipo}</strong>
+                        <span>desde {pesos(t.desde)}</span>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </section>
+ 
+    <!-- 2. Descuentos -->
+    <section class="franja franja-gris invertida" aria-labelledby="t-descuentos">
+        <div class="contenedor franja-contenido">
+            <div class="franja-texto">
+                <h2 id="t-descuentos">Descuentos para clientes</h2>
+                <p>Al ingresar a tu cuenta, el descuento se aplica solo en el carrito y en tu historial de compras. Algunos clientes también cuentan con atención prioritaria.</p>
+                <a href="/registro" class="boton">Crear cuenta</a>
+            </div>
+            <div class="franja-visual descuentos">
+                <div class="insignia">
+                    <span class="insignia-numero">10 %</span>
+                    <span>de descuento en tu cuenta</span>
+                </div>
+                <div class="insignia">
+                    <span class="insignia-numero">20 %</span>
+                    <span>de descuento y atención prioritaria</span>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+    <!-- 3. Recarga con aviso -->
+    <section class="franja" aria-labelledby="t-recarga">
+        <div class="contenedor franja-contenido">
+            <div class="franja-texto">
+                <h2 id="t-recarga">Recarga con aviso</h2>
+                <p>Un extintor debe recargarse cada cierto tiempo. En Mi cuenta cada uno tiene un temporizador que cuenta lo que falta y cambia de color cuando la recarga se acerca o se vence.</p>
+                <a href="/login" class="boton">Ir a Mi cuenta</a>
+            </div>
+            <!-- Ejemplo fijo de los tres estados (no es el temporizador real) -->
+            <div class="franja-visual ejemplos-recarga">
+                <div class="recarga recarga-vigente">
+                    <p class="recarga-estado">Vigente</p>
+                    <p class="recarga-tiempo">Faltan 326 d 21 h</p>
+                </div>
+                <div class="recarga recarga-proximo">
+                    <p class="recarga-estado">Recarga próxima</p>
+                    <p class="recarga-tiempo">Faltan 12 d 05 h</p>
+                </div>
+                <div class="recarga recarga-vencido">
+                    <p class="recarga-estado">Recarga vencida</p>
+                    <p class="recarga-tiempo">Vencida hace 3 d 08 h</p>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+    <!-- 4. Carrito -->
+    <section class="franja franja-gris invertida" aria-labelledby="t-carrito">
+        <div class="contenedor franja-contenido">
+            <div class="franja-texto">
+                <h2 id="t-carrito">Compra en línea</h2>
+                <p>Agrega productos al carrito lateral, revisa el subtotal con tu descuento y finaliza la compra. Después la verás en tu historial.</p>
+                <a href="/productos" class="boton">Comprar ahora</a>
+            </div>
+            <!-- Ejemplo con un cliente de 20 % de descuento -->
+            <div class="franja-visual">
+                <dl class="resumen-ejemplo">
+                    <div><dt>Subtotal</dt><dd>$27.990</dd></div>
+                    <div><dt>Descuento (20 %)</dt><dd>-$5.598</dd></div>
+                    <div class="total"><dt>Total</dt><dd>$22.392</dd></div>
+                </dl>
+            </div>
+        </div>
+    </section>
+ 
+    <!-- 5. Nosotros y contacto -->
+    <section class="franja" aria-labelledby="t-nosotros">
+        <div class="contenedor franja-contenido">
+            <div class="franja-texto">
+                <h2 id="t-nosotros">Conócenos y escríbenos</h2>
+                <p>Somos ExtinPro: conoce al equipo, el problema que resolvemos y a quiénes atendemos. Si tienes dudas, escríbenos o visítanos.</p>
+                <div class="franja-botones">
+                    <a href="/nosotros" class="boton">Quiénes somos</a>
+                    <a href="/contacto" class="boton">Contacto</a>
+                </div>
+            </div>
+            <div class="franja-visual">
+                <img class="franja-imagen" src="/img/nosotros-quienes.webp" alt="Equipo y local de ExtinPro" loading="lazy">
             </div>
         </div>
     </section>

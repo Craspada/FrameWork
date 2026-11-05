@@ -20,7 +20,6 @@ export function leerUsuariosNuevos(): Usuario[] {
     }
 }
 
-// Todos los usuarios: los de prueba (usuarios.ts) y los registrados desde la web
 export function todosLosUsuarios(): Usuario[] {
     return [...usuarios, ...leerUsuariosNuevos()];
 }
@@ -43,7 +42,7 @@ export function registrarUsuario(nombre: string, correo: string, contrasena: str
         Nombre_apellido: nombre.trim(),
         correo: correo.trim().toLowerCase(),
         contrasena,
-        descuento: 0,
+        descuento: 10,
         atencion_prioritaria: false,
     };
     nuevos.push(nuevo);

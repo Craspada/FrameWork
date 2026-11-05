@@ -22,7 +22,7 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
         </button>
 
         <nav id="navegacion-principal" class="nav-links" aria-label="Navegación principal">
-            {navegacion.map(({ href, label }) => (
+            {navegacion.filter((n) => n.href !== '/contacto').map(({ href, label }) => (
                 <a
                     href={href}
                     aria-current={currentPath === href ? 'page' : undefined}
@@ -30,7 +30,7 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
                     {label}
                 </a>
             ))}
-            <a class="nav-cta" href="/contacto">Hablemos</a>
+            <a class="nav-cta" href="/contacto">Contacto</a>
         </nav>
 
         <button type="button" id="boton-carrito" class="boton-carrito" aria-label="Abrir carrito">
